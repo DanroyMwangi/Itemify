@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:itemify/domain/constants/app_colors.dart';
+import 'package:itemify/domain/constants/app_routes.dart';
 import 'package:itemify/domain/constants/app_strings.dart';
 import 'package:itemify/presentation/pages/widgets/item_tile.dart';
 
@@ -21,6 +22,8 @@ class HomePage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 14),
             child: GestureDetector(
+              onTap: () =>
+                  Navigator.of(context).pushNamed(AppRoutes.addItemPage),
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
