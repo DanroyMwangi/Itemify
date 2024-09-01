@@ -1,5 +1,6 @@
 import 'package:async_redux/async_redux.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:itemify/application/state/app_state.dart';
 import 'package:itemify/domain/constants/app_colors.dart';
@@ -100,6 +101,43 @@ void main() {
       // Check that the number of ItemTile widgets matches the number of items in the state
       expect(find.byType(ItemTile),
           findsNWidgets(3)); // Matches the initial state with 3 items
+    });
+
+    testWidgets('deletes items when tapped', (WidgetTester tester) async {
+      await tester.pumpWidget(
+        StoreProvider<AppState>(
+          store: store,
+          child: const MaterialApp(
+            home: HomePage(),
+          ),
+        ),
+      );
+
+      // Check that the number of ItemTile widgets matches the number of items in the state
+      expect(find.byType(ItemTile),
+          findsNWidgets(3)); // Matches the initial state with 3 items
+
+      await tester.tap(find.byType(SvgPicture).first);
+
+      await tester.pumpAndSettle();
+      expect(find.byType(ItemTile),
+          findsNWidgets(2)); // Only two remain after deleting 1
+    });
+    testWidgets('displays empty state', (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(1280, 800);
+      tester.view.devicePixelRatio = 1;
+      await tester.pumpWidget(
+        StoreProvider<AppState>(
+          store: Store<AppState>(initialState: const AppState()),
+          child: const MaterialApp(
+            home: HomePage(),
+          ),
+        ),
+      );
+
+      // Check that the number of ItemTile widgets matches the number of items in the state
+      expect(find.byType(ItemTile), findsNothing);
+      expect(find.byType(SvgPicture), findsOneWidget);
     });
 
     testWidgets('background color of Scaffold is set correctly',
