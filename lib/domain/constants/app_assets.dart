@@ -1,0 +1,1 @@
+const String deleteIcon = 'assets/icons/trash.svg';
