@@ -35,7 +35,7 @@ void main() {
       expect(find.text('Enter a title for the item'), findsOneWidget);
 
       // Check for description text
-      expect(find.text('Description'), findsOneWidget);
+      expect(find.text('Description*', findRichText: true), findsOneWidget);
 
       // Check for description hint
       expect(find.text('Add description'), findsOneWidget);

@@ -1,5 +1,7 @@
+import 'package:async_redux/async_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:itemify/application/redux/delete_item_action.dart';
 import 'package:itemify/domain/constants/app_assets.dart';
 import 'package:itemify/domain/constants/app_colors.dart';
 import 'package:itemify/domain/models/item.dart';
@@ -24,6 +26,7 @@ class ItemTile extends StatelessWidget {
           )),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -35,7 +38,9 @@ class ItemTile extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                     ),
               ),
-              SvgPicture.asset(deleteIcon)
+              InkWell(
+                  onTap: () => context.dispatch(DeleteItemAction(item: item)),
+                  child: SvgPicture.asset(deleteIcon))
             ],
           ),
           const SizedBox(
