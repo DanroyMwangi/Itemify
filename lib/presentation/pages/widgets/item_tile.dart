@@ -23,6 +23,7 @@ class ItemTile extends StatelessWidget {
             width: 1.5,
           )),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -42,7 +43,7 @@ class ItemTile extends StatelessWidget {
           ),
           Text(
             item.description,
-            textAlign: TextAlign.justify,
+            textAlign: TextAlign.start,
           )
         ],
       ),
