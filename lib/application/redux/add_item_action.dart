@@ -6,8 +6,9 @@ import 'package:itemify/domain/models/item.dart';
 
 class AddItemAction extends ReduxAction<AppState> {
   final Item item;
+  final Function() callBack;
 
-  AddItemAction({required this.item});
+  AddItemAction({required this.item, required this.callBack});
 
   @override
   Future<AppState?> reduce() async {
@@ -23,8 +24,7 @@ class AddItemAction extends ReduxAction<AppState> {
 
   @override
   void after() {
-    // Pop the navigation stack after adding the item
-    dispatch(NavigateAction.pop());
+    callBack();
     super.after();
   }
 }

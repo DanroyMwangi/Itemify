@@ -216,8 +216,11 @@ class AddItemPage extends StatelessWidget {
                         formKey.currentState!.save(); // Save the form data
                         final newItem = Item(
                             title: itemTitle!, description: itemDescription!);
-                        context.dispatch(AddItemAction(item: newItem));
-                        Navigator.of(context).pop(); // Navigate back
+                        context.dispatch(AddItemAction(
+                            item: newItem,
+                            callBack: () {
+                              Navigator.of(context).pop();
+                            }));
                       }
                     },
                     child: Container(
