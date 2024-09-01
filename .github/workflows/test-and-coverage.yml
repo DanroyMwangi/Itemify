@@ -1,0 +1,56 @@
+name: Test and Coverage
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  test_and_coverage:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Install lcov
+      - name: Install lcov
+        run: sudo apt-get update && sudo apt-get install -y lcov
+
+      # Set up Flutter environment
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.0'
+
+      # Install dependencies
+      - name: Install dependencies
+        run: flutter pub get
+
+      # Run tests with coverage
+      - name: Run tests and generate coverage report
+        run: |
+          flutter test --coverage
+          genhtml coverage/lcov.info -o coverage_report
+
+      # Check coverage percentage
+      - name: Check coverage percentage
+        id: check_coverage
+        run: |
+          COVERAGE_PERCENTAGE=$(lcov --summary coverage/lcov.info | grep -Po '\d+\.\d+(?=\%)')
+          echo "Coverage is $COVERAGE_PERCENTAGE%"
+          echo "coverage=$COVERAGE_PERCENTAGE" >> $GITHUB_ENV
+          if (( $(echo "$COVERAGE_PERCENTAGE < 100.0" | bc -l) )); then
+            echo "Coverage is less than 100%"
+            echo "UPLOAD_COVERAGE_REPORT=true" >> $GITHUB_ENV
+            exit 1
+          fi
+
+      # Upload coverage report as an artifact if coverage is not 100%
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage_report

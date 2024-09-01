@@ -15,15 +15,11 @@ class DeleteItemAction extends ReduxAction<AppState> {
     List<Item?> itemsList = List.from(state.items ?? []);
 
     // Add the new item to the list
-    try {
-      if (itemsList.remove(item)) {
-        // Return the new state with the updated items list
-        return state.copyWith(items: itemsList);
-      } else {
-        throw const UserException('Deleting item failed');
-      }
-    } catch (e) {
-      throw UserException(e.toString());
+    if (itemsList.remove(item)) {
+      // Return the new state with the updated items list
+      return state.copyWith(items: itemsList);
+    } else {
+      throw const UserException('Deleting item failed');
     }
   }
 }

@@ -64,7 +64,8 @@ class HomePage extends StatelessWidget {
           List<Item?>? itemList = vm.appState.items;
 
           if (itemList == null || itemList.isEmpty) {
-            return Padding(
+            return SingleChildScrollView(
+                child: Padding(
               padding: const EdgeInsets.all(50.0),
               child: Center(
                 child: Column(
@@ -87,7 +88,7 @@ class HomePage extends StatelessWidget {
                   ],
                 ),
               ),
-            );
+            ));
           }
 
           return SingleChildScrollView(

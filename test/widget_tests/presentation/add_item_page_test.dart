@@ -1,5 +1,7 @@
+import 'package:async_redux/async_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:itemify/application/state/app_state.dart';
 import 'package:itemify/domain/constants/app_strings.dart';
 import 'package:itemify/presentation/pages/add_item_page.dart';
 
@@ -72,6 +74,72 @@ void main() {
 
       // Tap the back button
       await tester.tap(find.byIcon(Icons.chevron_left_rounded));
+      await tester.pumpAndSettle();
+
+      // Expect to navigate back (no longer finds AddItemPage widgets)
+      expect(find.byType(AddItemPage), findsNothing);
+    });
+
+    testWidgets('shows validation errors when fields are empty',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: AddItemPage(),
+        ),
+      );
+
+      // Tap the Add Item button without entering text
+      await tester.tap(find.byKey(const Key('add_item_button_key')));
+      await tester.pump();
+
+      // Expect validation error messages
+      expect(find.text('Please enter a title'), findsOneWidget);
+      expect(find.text('Please enter a description'), findsOneWidget);
+    });
+    testWidgets('allows form submission when valid input is provided',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(
+        StoreProvider(
+          store: Store<AppState>(
+            initialState: AppState.initial(),
+          ),
+          child: const MaterialApp(
+            home: AddItemPage(),
+          ),
+        ),
+      );
+
+      // Enter valid text into the title and description fields
+      await tester.enterText(
+          find.byKey(const Key('title_key')), 'Sample Title');
+      await tester.enterText(
+          find.byKey(const Key('description_key')), 'Sample Description');
+
+      // Tap the Add Item button
+      await tester.tap(find.byKey(const Key('add_item_button_key')));
+      await tester.pump();
+
+      // No validation error messages should be present
+      expect(find.text('Please enter a title'), findsNothing);
+      expect(find.text('Please enter a description'), findsNothing);
+    });
+
+    testWidgets('tapping cancel button navigates back',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Navigator(
+            onGenerateRoute: (settings) {
+              return MaterialPageRoute(
+                builder: (context) => const AddItemPage(),
+              );
+            },
+          ),
+        ),
+      );
+
+      // Tap the Cancel button
+      await tester.tap(find.text('Cancel'));
       await tester.pumpAndSettle();
 
       // Expect to navigate back (no longer finds AddItemPage widgets)

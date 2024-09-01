@@ -88,6 +88,7 @@ class AddItemPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     TextFormField(
+                      key: const Key('title_key'),
                       decoration: const InputDecoration(
                         hintText: enterTitleHint,
                         hintStyle: TextStyle(
@@ -141,6 +142,7 @@ class AddItemPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     TextFormField(
+                      key: const Key('description_key'),
                       decoration: const InputDecoration(
                         hintText: addDescriptionHint,
                         hintStyle: TextStyle(
@@ -210,6 +212,7 @@ class AddItemPage extends StatelessWidget {
 
                   // Add Item button
                   InkWell(
+                    key: const Key('add_item_button_key'),
                     onTap: () {
                       // Validate form and dispatch AddItemAction
                       if (formKey.currentState!.validate()) {
