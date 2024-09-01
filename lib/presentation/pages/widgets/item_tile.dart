@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:itemify/domain/constants/app_assets.dart';
 import 'package:itemify/domain/constants/app_colors.dart';
+import 'package:itemify/domain/models/item.dart';
 
 class ItemTile extends StatelessWidget {
-  const ItemTile({super.key});
+  final Item item;
+
+  const ItemTile({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +29,7 @@ class ItemTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                'Rainforest Ecosystems',
+                item.title,
                 style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                       fontWeight: FontWeight.w600,
                     ),
@@ -37,8 +40,8 @@ class ItemTile extends StatelessWidget {
           const SizedBox(
             height: 8,
           ),
-          const Text(
-            'Discover the rich biodiversity found in rainforests, from towering trees to unique wildlife species.',
+          Text(
+            item.description,
             textAlign: TextAlign.justify,
           )
         ],

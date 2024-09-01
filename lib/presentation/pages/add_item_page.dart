@@ -167,7 +167,7 @@ class AddItemPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: const Text(
-                        addItemButtonText,
+                        addItemString,
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w600,
